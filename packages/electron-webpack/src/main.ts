@@ -8,7 +8,6 @@ import "source-map-support/register"
 import { Configuration, Plugin, RuleSetRule } from "webpack"
 import merge from "webpack-merge"
 import { configureTypescript } from "./configurators/ts"
-import { configureVue } from "./configurators/vue/vue"
 import { ConfigurationEnv, ConfigurationType, ElectronWebpackConfiguration, PackageMetadata, PartConfiguration } from "./core"
 import { BaseTarget } from "./targets/BaseTarget"
 import { MainTarget } from "./targets/MainTarget"
@@ -210,7 +209,6 @@ export class WebpackConfigurator {
     this.debug(`Target class: ${target.constructor.name}`)
     target.configureRules(this)
     await Promise.all([target.configurePlugins(this), configureTypescript(this)])
-    configureVue(this)
 
     if (this.debug.enabled) {
       this.debug(`\n\n${this.type} config:` + JSON.stringify(this._configuration, null, 2) + "\n\n")
@@ -273,7 +271,7 @@ export class WebpackConfigurator {
     externals.push("electron-devtools-installer")
     if (this.type === "main") {
       externals.push("webpack/hot/log-apply-result")
-      externals.push("electron-webpack/out/electron-main-hmr/HmrClient")
+      externals.push("@moviecast/electron-webpack/out/electron-main-hmr/HmrClient")
       externals.push("source-map-support/source-map-support.js")
     }
 

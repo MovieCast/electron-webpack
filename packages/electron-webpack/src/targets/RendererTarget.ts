@@ -4,7 +4,6 @@ import * as path from "path"
 import { getConfig } from "read-config-file"
 import { DefinePlugin } from "webpack"
 import { getDllAssets } from "../configurators/dll"
-import { configureVueRenderer } from "../configurators/vue/vue"
 import { WebpackConfigurator } from "../main"
 import { statOrNull } from "../util"
 import { BaseTarget, configureFileLoader } from "./BaseTarget"
@@ -69,17 +68,12 @@ export class BaseRendererTarget extends BaseTarget {
       })
     }
 
-    if (configurator.hasDependency("vue")) {
-      configureVueRenderer(configurator)
-    }
-    else {
-      configurator.rules.push({
-        test: /\.(html)$/,
-        use: {
-          loader: "html-loader",
-        }
-      })
-    }
+    configurator.rules.push({
+      test: /\.(html)$/,
+      use: {
+        loader: "html-loader",
+      }
+    })
   }
 
   async configurePlugins(configurator: WebpackConfigurator): Promise<void> {

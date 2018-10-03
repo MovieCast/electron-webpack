@@ -16,7 +16,7 @@ export async function configureTypescript(configurator: WebpackConfigurator) {
   const tsConfigFile = await getFirstExistingFile([path.join(configurator.sourceDir, "tsconfig.json"), path.join(configurator.projectDir, "tsconfig.json")], null)
   // check to produce clear error message if no tsconfig.json
   if (tsConfigFile == null) {
-    throw new Error(`Please create tsconfig.json in the "${configurator.projectDir}":\n\n{\n  "extends": "./node_modules/electron-webpack/tsconfig-base.json"\n}\n\n`)
+    throw new Error(`Please create tsconfig.json in the "${configurator.projectDir}":\n\n{\n  "extends": "./node_modules/@moviecast/electron-webpack/tsconfig-base.json"\n}\n\n`)
   }
 
   if (configurator.debug.enabled) {

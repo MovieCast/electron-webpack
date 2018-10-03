@@ -1,4 +1,4 @@
-import { ElectronWebpackConfiguration } from "electron-webpack"
+import { ElectronWebpackConfiguration } from "@moviecast/electron-webpack"
 import { copy, emptyDir } from "fs-extra-p"
 import MemoryFS from "memory-fs"
 import * as path from "path"
@@ -12,7 +12,7 @@ export const rootDir = path.join(__dirname, "..", "..", "..")
 export async function doTest(configurationFile: string, electronWebpackConfiguration?: ElectronWebpackConfiguration) {
   const projectDir = await getMutableProjectDir()
   const finalConfiguration = {projectDir, ...electronWebpackConfiguration}
-  const configuration = await require(`electron-webpack/${configurationFile}`)({configuration: finalConfiguration, production: true})
+  const configuration = await require(`@moviecast/electron-webpack/${configurationFile}`)({configuration: finalConfiguration, production: true})
   await testWebpack(configuration, projectDir)
 }
 

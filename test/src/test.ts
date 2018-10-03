@@ -12,7 +12,7 @@ test("main production", () => doTest("webpack.main.config.js"))
 test("renderer custom sourceDirectory", async () => {
   const projectDir = await getMutableProjectDir()
   await move(path.join(projectDir, "src/renderer"), path.join(projectDir, "customRenderer"))
-  const configuration = await require("electron-webpack/webpack.renderer.config.js")({production: true, configuration: {
+  const configuration = await require("@moviecast/electron-webpack/webpack.renderer.config.js")({production: true, configuration: {
     projectDir,
     renderer: {
       sourceDirectory: "customRenderer"
@@ -24,7 +24,7 @@ test("renderer custom sourceDirectory", async () => {
 test("main extra entry point and custom source dir", async () => {
   const projectDir = await getMutableProjectDir()
   await move(path.join(projectDir, "src/main"), path.join(projectDir, "customMain"))
-  const configuration = await require("electron-webpack/webpack.main.config.js")({production: true, configuration: {
+  const configuration = await require("@moviecast/electron-webpack/webpack.main.config.js")({production: true, configuration: {
     projectDir,
     main: {
       extraEntries: ["@/foo.js"],
@@ -49,7 +49,7 @@ test("renderer production", async () => {
     createTestAsset("static", "txt"),
   ])
 
-  const configuration = await require("electron-webpack/webpack.renderer.config.js")({configuration: {projectDir}, production: true})
+  const configuration = await require("@moviecast/electron-webpack/webpack.renderer.config.js")({configuration: {projectDir}, production: true})
   await testWebpack(configuration, projectDir)
 })
 
@@ -62,7 +62,7 @@ test("typescript", async () => {
       baseUrl: "src",
     },
   })
-  const configuration = await require("electron-webpack/webpack.main.config.js")({production: true, configuration: {
+  const configuration = await require("@moviecast/electron-webpack/webpack.main.config.js")({production: true, configuration: {
     projectDir,
   }})
   await testWebpack(configuration, projectDir)

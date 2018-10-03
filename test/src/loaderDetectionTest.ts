@@ -12,7 +12,7 @@ test("nunjucks", async () => {
   })
   await writeFile(path.join(projectDir, "src/main/page.njk"), "myGlobal = {{ myGlobal }}")
   await writeFile(path.join(projectDir, "src/main/index.js"), 'import "./page.njk"')
-  const configuration = await require("electron-webpack/webpack.main.config.js")({production: true, configuration: {
+  const configuration = await require("@moviecast/electron-webpack/webpack.main.config.js")({production: true, configuration: {
     projectDir,
   }})
 
@@ -30,7 +30,7 @@ test("sass", async () => {
     color: $primary-color;
   }`)
   await writeFile(path.join(projectDir, "src/renderer/index.js"), 'import "./file.scss"')
-  const configuration = await require("electron-webpack/webpack.renderer.config.js")({production: true, configuration: {
+  const configuration = await require("@moviecast/electron-webpack/webpack.renderer.config.js")({production: true, configuration: {
     projectDir,
   }})
 
@@ -51,7 +51,7 @@ test("react", async () => {
 </MyButton>
   `)
   await writeFile(path.join(projectDir, "src/renderer/index.js"), 'import "./file.jsx"')
-  const configuration = require("electron-webpack/webpack.renderer.config.js")({production: true, configuration: {
+  const configuration = require("@moviecast/electron-webpack/webpack.renderer.config.js")({production: true, configuration: {
     projectDir,
   }})
   await assertThat(configuration).throws(projectDir)

@@ -5,7 +5,7 @@ test("title true", () => testTitle(true))
 test("title false", () => testTitle(false))
 test("title null", () => testTitle(null))
 
-const rendererConfig = require("electron-webpack/webpack.renderer.config")
+const rendererConfig = require("@moviecast/electron-webpack/webpack.renderer.config")
 
 async function testTitle(title: boolean | null) {
   const projectDir = path.join(rootDir, "test/fixtures/simple")

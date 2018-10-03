@@ -1,12 +1,12 @@
 {
-  "name": "electron-webpack",
+  "name": "@moviecast/electron-webpack",
   "private": true,
   "license": "MIT",
   "author": "Vladimir Krivosheev <develar@gmail.com>",
   "scripts": {
     "compile": "cross-env BABEL_WORKAROUND2=true ts-babel packages/electron-webpack test && yarn schema",
     "lint": "tslint -c ./node_modules/electron-builder-tslint-config/tslint.json -p packages/electron-webpack --exclude '**/*.js'",
-    "release": "BABEL_ENV=production yarn compile && ./npm-publish.sh && conventional-changelog -p angular -i CHANGELOG.md -s",
+    "release": "cross-env BABEL_ENV=production yarn compile && lerna publish && conventional-changelog -p angular -i CHANGELOG.md -s",
     "test": "yarn compile && yarn lint && jest",
     "docs": "rm -rf _book && gitbook && ./docs/publish.sh",
     "serve-docs": "gitbook && http-server _book -c-1",
