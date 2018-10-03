@@ -1,6 +1,6 @@
 {
   "name": "@moviecast/electron-webpack",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "license": "MIT",
   "author": "Vladimir Krivosheev <develar@gmail.com>",
   "main": "out/main.js",

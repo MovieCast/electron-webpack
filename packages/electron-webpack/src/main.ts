@@ -285,24 +285,7 @@ export class WebpackConfigurator {
 
 const schemeDataPromise = new Lazy(() => readJson(path.join(__dirname, "..", "scheme.json")))
 
-export async function createConfigurator(type: ConfigurationType, env: ConfigurationEnv | null) {
-  if (env != null) {
-    // allow to pass as `--env.autoClean=false` webpack arg
-    const _env: any = env
-    for (const name of ["minify", "autoClean", "production"]) {
-      if (_env[name] === "true") {
-        _env[name] = true
-      }
-      else if (_env[name] === "false") {
-        _env[name] = false
-      }
-    }
-  }
-
-  if (env == null) {
-     env = {}
-   }
-
+export async function getConfigurationAndMeta(env: ConfigurationEnv = {}): Promise<{ config: ElectronWebpackConfiguration, metadata: PackageMetadata }> {
   const projectDir = (env.configuration || {}).projectDir || process.cwd()
   const packageMetadata = await orNullIfFileNotExist(readJson(path.join(projectDir, "package.json")))
   const electronWebpackConfig = ((await getConfig({
@@ -324,8 +307,31 @@ How to fix:
   * Not found? The option was deprecated or not exists (check spelling).
   * Found? Check that the option in the appropriate place. e.g. "sourceDirectory" only in the "main" or "renderer", not in the root.
 `
-  })
-  return new WebpackConfigurator(type, env, electronWebpackConfig, packageMetadata)
+  });
+
+  return { config: electronWebpackConfig, metadata: packageMetadata };
+}
+
+export async function createConfigurator(type: ConfigurationType, env: ConfigurationEnv | null) {
+  if (env != null) {
+    // allow to pass as `--env.autoClean=false` webpack arg
+    const _env: any = env
+    for (const name of ["minify", "autoClean", "production"]) {
+      if (_env[name] === "true") {
+        _env[name] = true
+      }
+      else if (_env[name] === "false") {
+        _env[name] = false
+      }
+    }
+  }
+
+  if (env == null) {
+     env = {}
+   }
+
+  const result = await getConfigurationAndMeta(env);
+  return new WebpackConfigurator(type, env, result.config, result.metadata)
 }
 
 export async function configure(type: ConfigurationType, env: ConfigurationEnv | null): Promise<Configuration | null> {

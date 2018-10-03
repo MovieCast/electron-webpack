@@ -6,7 +6,7 @@ import * as path from "path"
 import "source-map-support/register"
 import webpack, { Compiler } from "webpack"
 import { HmrServer } from "../electron-main-hmr/HmrServer"
-import { configure } from "../main"
+import { configure, getConfigurationAndMeta } from "../main"
 import { getFreePort, orNullIfFileNotExist } from "../util"
 import { DelayedFunction, getCommonEnv, logError, logProcess, logProcessErrorOutput } from "./devUtil"
 import { startRenderer } from "./WebpackDevServerManager"
@@ -19,7 +19,9 @@ const debug = require("debug")("electron-webpack")
 
 // do not remove main.js to allow IDE to keep breakpoints
 async function emptyMainOutput() {
-  const outDir = path.join(projectDir, "dist", "main")
+  const { config } = await getConfigurationAndMeta()
+
+  const outDir = path.join(projectDir, config.commonDistDirectory || "dist", "main")
   const files = await orNullIfFileNotExist(readdir(outDir))
   if (files == null) {
     return
@@ -53,9 +55,11 @@ class DevRunner {
       logError("Main", error)
     })
 
+    const { config } = await getConfigurationAndMeta();
+
     const electronArgs = process.env.ELECTRON_ARGS
     const args = electronArgs != null && electronArgs.length > 0 ? JSON.parse(electronArgs) : [`--inspect=${await getFreePort("127.0.0.1", 5858)}`]
-    args.push(path.join(projectDir, "dist/main/main.js"))
+    args.push(path.join(projectDir, config.commonDistDirectory || "dist", "main/main.js"))
     // Pass remaining arguments to the application. Remove 3 instead of 2, to remove the `dev` argument as well.
     args.push(...process.argv.slice(3))
     // we should start only when both start and main are started
